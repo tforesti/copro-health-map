@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-copro}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-copro}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    restart: unless-stopped
+    environment:
+      RAILS_ENV: production
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY:?Set RAILS_MASTER_KEY in .env}
+      PGHOST: db
+      PGUSER: ${POSTGRES_USER:-copro}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      CORS_ORIGINS: ${APP_URL:-http://localhost}
+      ASSUME_SSL: ${ASSUME_SSL:-false}
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["./bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+    expose:
+      - "3000"
+
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    # Exposé en local uniquement : Nginx du VPS reverse-proxy vers ce port.
+    ports:
+      - "127.0.0.1:${HTTP_PORT:-8080}:80"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
