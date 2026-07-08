@@ -1,24 +1,25 @@
-# README
+# Copro Health Map
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Carte des copropriétés de Lyon et score de santé estimé à partir des données ouvertes **RNC (ANAH)**.
 
-Things you may want to cover:
+## Stack
 
-* Ruby version
+- **Backend** : Ruby on Rails 8, PostgreSQL
+- **Frontend** : React, TypeScript, Vite, Leaflet
 
-* System dependencies
+## Lancer en local
 
-* Configuration
+Voir [docs/rnc-import.md](docs/rnc-import.md).
 
-* Database creation
+```bash
+bin/rails db:migrate
+bin/rails import:rnc[/chemin/vers/rnc.csv]
+bin/rails server
 
-* Database initialization
+cd frontend && npm install && npm run dev
+# → http://localhost:5173
+```
 
-* How to run the test suite
+## Score de santé
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Heuristique sur les données RNC disponibles en open data (pas d'impayés réels). Voir `app/services/health_score_calculator.rb`.
