@@ -1,0 +1,21 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #0f172a;
+  background: #f1f5f9;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
