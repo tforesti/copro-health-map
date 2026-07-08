@@ -25,7 +25,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <div>
-          <h1>Copro Health Map</h1>
+          <h1>POC — Copro Health Map</h1>
           <p>Données RNC (ANAH) — Lyon — score de santé estimé</p>
         </div>
         <label>

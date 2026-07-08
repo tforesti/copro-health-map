@@ -1,6 +1,7 @@
-# Copro Health Map
+# POC Copro Health Map
 
 Carte des copropriétés de Lyon et score de santé estimé à partir des données ouvertes **RNC (ANAH)**.
+https://copro-health-map.tf89.fr/
 
 ## Stack
 

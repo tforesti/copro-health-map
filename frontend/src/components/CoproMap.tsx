@@ -90,12 +90,12 @@ export function CoproMap({ coproprietes, selectedId, onSelect }: CoproMapProps) 
           <CircleMarker
             key={copro.id}
             center={[Number(copro.latitude), Number(copro.longitude)]}
-            radius={isSelected ? 14 : 10}
+            radius={isSelected ? 4 : 2.5}
             pathOptions={{
               color: isSelected ? '#1e293b' : color,
               fillColor: color,
               fillOpacity: 0.85,
-              weight: isSelected ? 3 : 2,
+              weight: isSelected ? 1 : 0.5,
             }}
             eventHandlers={{
               click: () => onSelect(copro.id),
