@@ -1,89 +1,42 @@
 # Copro Health Map
 
-POC perso — carte des copropriétés scorées selon leur « santé » (financier, technique, gouvernance, opérationnel).
+POC — carte des copropriétés de Lyon, score de santé estimé à partir des données ouvertes **RNC (ANAH)**.
 
-Projet d'exploration en marge d'une candidature [Matera](https://matera.eu). Données fictives (Lyon).
+Projet portfolio en marge d'une candidature [Matera](https://matera.eu).
 
 ## Stack
 
-- **Backend** : Ruby on Rails 8 (API), SQLite (dev), PostgreSQL (prod)
-- **Frontend** : React, TypeScript, Vite, TanStack Query, Leaflet, Tailwind CSS
-- **Tests** : RSpec (calculateur de score + API)
+- **Backend** : Ruby on Rails 8, PostgreSQL, import CSV RNC
+- **Frontend** : React, TypeScript, Vite, TanStack Query, Leaflet
 
 ## Démo locale
 
-Voir **[docs/development-setup.md](docs/development-setup.md)** pour l’installation propre (rbenv, Ruby 4.0.5).
-
-### Prérequis
-
-- **rbenv** + Ruby 4.0.5 (voir guide ci-dessus)
-- Node.js 20+
-
-### Backend
+Voir [docs/development-setup.md](docs/development-setup.md) et [docs/rnc-import.md](docs/rnc-import.md).
 
 ```bash
-cd backend
-bin/setup          # bundle install + db:prepare + db:seed
+bin/rails db:migrate
+bin/rails import:rnc[/chemin/vers/rnc.csv]
 bin/rails server
+
+cd frontend && npm install && npm run dev
+# → http://localhost:5173
 ```
 
-API : http://localhost:3000/api/v1/coproprietes
+## Déploiement VPS OVH
 
-### Frontend
+Guide complet : **[docs/deploy-ovh.md](docs/deploy-ovh.md)**
 
 ```bash
-cd frontend
-npm install
-npm run dev
-```
-
-App : http://localhost:5173
-
-## Score de santé (MVP)
-
-Score sur 100 (100 = bonne santé) :
-
-```
-score = 100 - (0.35×financier + 0.30×technique + 0.20×gouvernance + 0.15×opérationnel)
-```
-
-Seuils :
-
-- **70–100** : saine
-- **40–69** : à surveiller
-- **0–39** : à risque
-
-## Déploiement OVH (Docker)
-
-```bash
+cp .env.example .env   # RAILS_MASTER_KEY, POSTGRES_PASSWORD
 docker compose up -d --build
 ```
 
-- Frontend : http://localhost (Nginx)
-- API : http://localhost/api/v1/coproprietes
+- Site : `http://IP_DU_VPS`
+- API : `http://IP_DU_VPS/api/v1/coproprietes`
 
-Variables utiles (`.env`) :
+## Score de santé
 
-```
-POSTGRES_PASSWORD=changeme
-CORS_ORIGINS=https://votre-domaine.fr
-RAILS_MASTER_KEY=<voir backend/config/master.key>
-```
-
-## Structure
-
-```
-backend/   Rails API + HealthScoreCalculator
-frontend/  React SPA
-docker-compose.yml
-```
-
-## Limites / V2
-
-- Données seed fictives
-- Pas d'authentification
-- Pas d'import Registre National des Copropriétés (RNC)
-- Filtres avancés, alertes, recalcul batch
+Heuristique sur données RNC (pas d'impayés réels en open data). Voir `app/services/health_score_calculator.rb`.
 
 ## Licence
 

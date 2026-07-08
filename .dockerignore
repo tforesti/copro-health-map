@@ -39,6 +39,9 @@
 # Ignore CI service files.
 /.github
 
+# Frontend (built by its own Docker image)
+/frontend
+
 # Ignore Kamal files.
 /config/deploy*.yml
 /.kamal
