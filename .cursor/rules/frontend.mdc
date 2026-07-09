@@ -1,0 +1,18 @@
+---
+description: Conventions frontend React/Leaflet
+globs: frontend/**/*.tsx,frontend/**/*.ts
+alwaysApply: false
+---
+
+# Frontend
+
+- Composants fonctionnels, hooks React standards
+- Données serveur via TanStack Query (`useQuery` dans `App.tsx`)
+- API relative `/api/v1/...` — en prod, nginx proxy `/api` vers Rails
+- Carte : react-leaflet (`MapContainer`, `CircleMarker`), hooks custom avec `useMap()` pour zoom/fit bounds
+
+## Style
+
+- Colocaliser les types dans `frontend/src/types/`
+- Pas de state management global — `useState` + TanStack Query suffisent
+- Changements UI minimaux, cohérents avec `App.css` existant

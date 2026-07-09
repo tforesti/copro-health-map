@@ -1,0 +1,23 @@
+---
+description: Conventions Rails du POC Copro Health Map
+globs: app/**/*.rb,lib/**/*.rb,config/**/*.rb
+alwaysApply: false
+---
+
+# Rails
+
+- Logique métier dans `app/services/` avec `self.call` (ex. `HealthScoreCalculator`, `RncImporter`)
+- Controllers API fins : filtrage `params`, sérialisation `as_json(only: [...])`
+- Pas de vues Rails pour l'UI — le front est React dans `frontend/`
+- Score recalculé via `before_validation` sur `Copropriete`, pas dans le controller
+
+## Domaine RNC
+
+- `copro_dans_pdp` = périmètre réseaux chaleur/froid, **pas** plan de sauvegarde
+- Ne pas pénaliser `copro_dans_pdp` dans le score
+- Le score est une heuristique (pas d'impayés en open data)
+
+## Style
+
+- Changements minimaux, réutiliser les patterns existants
+- Pas de gem ou d'abstraction ajoutée pour un cas unique
